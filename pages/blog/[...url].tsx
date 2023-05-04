@@ -15,7 +15,6 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<{data: IData | null}> = async ({ params }) => {
-    console.log('params', params)
     const response = await fetch('https://jsonplaceholder.typicode.com/posts');
     const data: IData[] = await response.json();
     const blogItem = data?.find(item => item?.id === Number(params?.url?.[0])) ?? null
