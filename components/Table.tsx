@@ -1,5 +1,9 @@
-import Link from "next/link";
 import {TableRow} from "@/components/TableRow";
+import {TableHeaderItem} from "@/components/TableHeaderItem";
+import {Divider} from "@/components/Divider";
+import {Title} from "@/components/Title";
+import {usePagination} from "@/components/usePagination";
+import {Pagination} from "@/components/Pagination";
 
 interface ITable {
     data: IData[]
@@ -7,20 +11,26 @@ interface ITable {
     isDetails?: boolean
 }
 export const Table = ({data, title, isDetails}: ITable) => {
+    const {
+        dataToShow,
+        activePage,
+        total,
+        setActivePage,
+    } = usePagination(data)
     return (
         <div className='bg-amber-400'>
-            <span className='flex justify-center items-center h-12 mb-3 text-4xl text-white'>{title}</span>
-            <span className='flex bg-white h-0.5 mx-12 mb-9' />
+            <Title title={title} />
+            <Divider />
             <table className='w-full'>
                 <thead>
                     <tr>
-                        <th className='bg-lime-500 h-12 border-2 border-amber-400'></th>
-                        <th className='bg-lime-500 h-12 border-2 border-amber-400'>Title</th>
-                        <th className='bg-lime-500 h-12 border-2 border-amber-400'>body</th>
+                        <TableHeaderItem />
+                        <TableHeaderItem title='Title'/>
+                        <TableHeaderItem title='body'/>
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item) => (
+                    {dataToShow.map((item) => (
                         <TableRow
                             key={item.id}
                             id={item.id}
@@ -30,6 +40,7 @@ export const Table = ({data, title, isDetails}: ITable) => {
                     ))}
                 </tbody>
             </table>
+            <Pagination activePage={activePage} total={total} setActivePage={setActivePage}/>
         </div>
     )
 }
